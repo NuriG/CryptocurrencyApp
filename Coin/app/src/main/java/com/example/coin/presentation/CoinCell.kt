@@ -1,5 +1,6 @@
 package com.example.coin.presentation
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.coin.ui.components.FormattedChangeInProcent
@@ -23,11 +25,12 @@ import com.nurig.cryptocurrencylistapp.data.CryptocurrencyData
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun CoinCell(coin: CryptocurrencyData) {
+fun CoinCell(coin: CryptocurrencyData, onItemClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
+            .clickable(onClick = onItemClick)
     ) {
         GlideImage(
             model = coin.image,
@@ -61,10 +64,13 @@ data class TestInfoDataClass(
 )
 
 @Composable
-fun ListCripto(coins: List<CryptocurrencyData>) {
+fun ListCripto(navController: NavController, coins: List<CryptocurrencyData>) {
     LazyColumn {
         items(coins) {
-            coin -> CoinCell(coin = coin)
+            coin -> CoinCell(
+            coin = coin,
+            onItemClick =  { navController.navigate("SpecificCoin/${coin.id}") }
+            )
         }
     }
 }

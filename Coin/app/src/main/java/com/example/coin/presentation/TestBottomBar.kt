@@ -1,5 +1,6 @@
 package com.example.coin.presentation
 
+import android.util.Log
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -12,6 +13,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -45,7 +47,6 @@ fun CryptocurrencyApp() {
         BottomNavigationItem("Profile", Icons.Filled.Home, Icons.Default.Home ),
     )
 
-
     val navController = rememberNavController()
     var selectedItemIndex by rememberSaveable {
         mutableStateOf(0)
@@ -77,7 +78,16 @@ fun CryptocurrencyApp() {
             startDestination = "Discover",
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable("Discover") { ListCripto(coins = coinsState) }
+            composable("Discover") { ListCripto(navController = navController ,coins = coinsState) }
+            composable("SpecificCoin/{coinId}") { backStackEntry ->
+                val coinId = backStackEntry.arguments?.getString("coinId")
+                Log.i("ClickSpecificCoin", "For test")
+                LaunchedEffect(key1 = Unit) {
+                    viewModel.loadCoinInfo(coinId!!)
+                }
+                val selectedCoinInfo by viewModel.selectedCoinInfo.collectAsState()
+                Log.d("ClickSpecificCoin", "API Response: $selectedCoinInfo")
+            }
             composable("Favorites") {}
             composable("Profile") {}
             composable("SpecificCoin") {}
