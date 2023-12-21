@@ -56,6 +56,9 @@ dependencies {
     // for Image Glide
     implementation ("com.github.bumptech.glide:compose:1.0.0-beta01")
 
+    // for chart
+    //implementation ("co.yml:ycharts:2.1.0")
+
     // ViewModel Compose
     implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1")
 

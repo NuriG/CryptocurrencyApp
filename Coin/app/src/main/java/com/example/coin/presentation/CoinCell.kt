@@ -55,14 +55,6 @@ fun CoinCell(coin: CryptocurrencyData, onItemClick: () -> Unit) {
     }
 }
 
-
-data class TestInfoDataClass(
-    val name: String,
-    val shortName: String,
-    val price: String,
-    val changePrice: String
-)
-
 @Composable
 fun ListCripto(navController: NavController, coins: List<CryptocurrencyData>) {
     LazyColumn {
@@ -73,10 +65,4 @@ fun ListCripto(navController: NavController, coins: List<CryptocurrencyData>) {
             )
         }
     }
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun CoinCellPreview() {
 }

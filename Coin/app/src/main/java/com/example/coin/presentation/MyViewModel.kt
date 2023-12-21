@@ -3,6 +3,7 @@ package com.example.coin.presentation
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.coin.data.PriceResponse
 import com.example.coin.data.repository.CoinsRepository
 import com.nurig.cryptocurrencylistapp.data.CryptocurrencyData
 import com.nurig.cryptocurrencylistapp.data.CryptocurrencyInfo
@@ -24,6 +25,9 @@ class MyViewModel @Inject constructor(
     private val _selectedCoinInfo = MutableStateFlow<CryptocurrencyInfo?>(null)
     val selectedCoinInfo: StateFlow<CryptocurrencyInfo?> = _selectedCoinInfo.asStateFlow()
 
+    private val _listPricesForChart = MutableStateFlow<PriceResponse?>(null)
+    val listPricesForChart: StateFlow<PriceResponse?> = _listPricesForChart.asStateFlow()
+
     init {
         viewModelScope.launch {
             val response = coinsRepository.getList()
@@ -34,8 +38,15 @@ class MyViewModel @Inject constructor(
     }
     fun loadCoinInfo(id: String) {
         viewModelScope.launch {
-            val coinInfo: CryptocurrencyInfo = coinsRepository.getInfoCoin(id)
+            val coinInfo: CryptocurrencyInfo? = coinsRepository.getInfoCoin(id)
             _selectedCoinInfo.value = coinInfo
+        }
+    }
+
+    fun loadCoinPricesForChart(id: String) {
+        viewModelScope.launch {
+            val coinPricesInfo = coinsRepository.getInfoPricesForChart(id)
+            _listPricesForChart.value = coinPricesInfo
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.coin.presentation
 
+import CryptoPriceChart
 import android.util.Log
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -21,12 +22,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.coin.presentation.chart.ChartGraph
+import com.example.coin.presentation.chart.ToManyRequest
 
 data class BottomNavigationItem(
     val title: String,
@@ -55,7 +57,7 @@ fun CryptocurrencyApp() {
         bottomBar = {
             NavigationBar {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentDestination = navBackStackEntry?.destination
+                // val currentDestination = navBackStackEntry?.destination
                 items.forEachIndexed { index, item ->
                     NavigationBarItem(
                         selected = selectedItemIndex == index,
@@ -82,22 +84,28 @@ fun CryptocurrencyApp() {
             composable("SpecificCoin/{coinId}") { backStackEntry ->
                 val coinId = backStackEntry.arguments?.getString("coinId")
                 Log.i("ClickSpecificCoin", "For test")
+
                 LaunchedEffect(key1 = Unit) {
                     viewModel.loadCoinInfo(coinId!!)
+                    viewModel.loadCoinPricesForChart(coinId!!)
                 }
                 val selectedCoinInfo by viewModel.selectedCoinInfo.collectAsState()
-                Log.d("ClickSpecificCoin", "API Response: $selectedCoinInfo")
+                val selectedCoinPrices by viewModel.listPricesForChart.collectAsState()
+
+                Log.d("ClickSpecificCoin", "API Response coinInfo: $selectedCoinInfo")
+                Log.d("ClickSpecificCoin", "API Response coinPrices: $selectedCoinPrices")
+
+                if (selectedCoinPrices == null || selectedCoinInfo == null) {
+                    ToManyRequest()
+                } else {
+                    ChartGraph(coinInfo = selectedCoinInfo!!, priceResponse = selectedCoinPrices!!)
+                }
+
             }
             composable("Favorites") {}
             composable("Profile") {}
             composable("SpecificCoin") {}
         }
     }
-}
-
-@Composable
-@Preview
-fun TestPreview() {
-    CryptocurrencyApp()
 }
 
