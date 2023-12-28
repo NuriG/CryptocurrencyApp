@@ -1,4 +1,4 @@
-package com.example.coin.presentation.chart
+package com.example.coin.presentation.SpecificCryptocurrencyScreen
 
 import java.math.BigDecimal
 import java.math.RoundingMode

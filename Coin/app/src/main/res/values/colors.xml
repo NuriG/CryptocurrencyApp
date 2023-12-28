@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="color_bottom_bar">#FFFFFFFF</color>
+    <color name="color_primary_text">#FF525252</color>
+    <color name="color_secondary_text">#FF9B9B9B</color>
+    <color name="icon_bottom_bar_pressed">#FF0063F5</color>
+    <color name="icon_bottom_bar_unpressed">#FF868686</color>
+    <color name="button_buy">#FF0063F5</color>
+    <color name="button_swipe_1">#FFF8F9FA</color>
+    <color name="button_swipe_text_pressed">#FF0063F5</color>
+    <color name="button_swipe_text">#FF6C757D</color>
 </resources>

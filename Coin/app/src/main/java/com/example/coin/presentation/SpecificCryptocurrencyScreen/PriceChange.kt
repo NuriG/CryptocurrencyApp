@@ -1,4 +1,4 @@
-package com.example.coin.presentation.chart
+package com.example.coin.presentation.SpecificCryptocurrencyScreen
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -19,12 +19,12 @@ fun PriceChange(priceResponse: PriceResponse,  selectedTimeFrame: String) {
     val prices = priceResponse.prices.sortedBy { it[0] }
 
     val filteredPrices = when (selectedTimeFrame) {
-        "1 day" -> prices.filter { it[0] >= (System.currentTimeMillis() - 24 * 60 * 60 * 1000) }
-        "7 days" -> prices.filter { it[0] >= (System.currentTimeMillis() - 7 * 24 * 60 * 60 * 1000) }
-        "1 month" -> prices.filter { it[0] >= (System.currentTimeMillis() - 30L * 24L * 60L * 60L * 1000L) }
-        "3 months" -> prices.filter { it[0] >= (System.currentTimeMillis() - 90L * 24L * 60L * 60L * 1000L) }
-        "1 year" -> prices.filter { it[0] >= (System.currentTimeMillis() - 365L * 24L * 60L * 60L * 1000L) }
-        "max" -> prices
+        "1D" -> prices.filter { it[0] >= (System.currentTimeMillis() - 24 * 60 * 60 * 1000) }
+        "7D" -> prices.filter { it[0] >= (System.currentTimeMillis() - 7 * 24 * 60 * 60 * 1000) }
+        "1M" -> prices.filter { it[0] >= (System.currentTimeMillis() - 30L * 24L * 60L * 60L * 1000L) }
+        "3M" -> prices.filter { it[0] >= (System.currentTimeMillis() - 90L * 24L * 60L * 60L * 1000L) }
+        "1Y" -> prices.filter { it[0] >= (System.currentTimeMillis() - 365L * 24L * 60L * 60L * 1000L) }
+        "MAX" -> prices
         else -> prices
     }
 
@@ -40,7 +40,7 @@ fun PriceChange(priceResponse: PriceResponse,  selectedTimeFrame: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp)
+            .padding(16.dp)
     ) {
         Text(text = currentPriceRound.toString(), fontSize = 20.sp)
 

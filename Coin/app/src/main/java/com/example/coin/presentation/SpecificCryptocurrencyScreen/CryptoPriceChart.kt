@@ -1,3 +1,4 @@
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -12,21 +13,24 @@ import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.coin.R
 import com.example.coin.data.PriceResponse
-import com.example.coin.presentation.chart.roundNumber
+import com.example.coin.presentation.SpecificCryptocurrencyScreen.roundNumber
 
+@SuppressLint("ResourceAsColor")
 @Composable
 fun CryptoPriceChart(priceResponse: PriceResponse, selectedTimeFrame: String) {
 
     val timeFrameInMillis = when (selectedTimeFrame) {
-        "1 day" -> 24L * 60L * 60L * 1000L
-        "7 days" -> 7L * 24L * 60L * 60L * 1000L
-        "1 month" -> 30L * 24L * 60L * 60L * 1000L
-        "3 month" -> 90L * 24L * 60L * 60L * 1000L
-        "1 year" -> 365L * 24L * 60L * 60L * 1000L
-        "max" -> Long.MAX_VALUE
+        "1D" -> 23L * 60L * 60L * 1000L
+        "7D" -> 7L * 24L * 60L * 60L * 1000L
+        "1M" -> 30L * 24L * 60L * 60L * 1000L
+        "3M" -> 85L * 24L * 60L * 60L * 1000L
+        "1Y" -> 365L * 24L * 60L * 60L * 1000L
+        "MAX" -> Long.MAX_VALUE
         else -> 24L * 60L * 60L * 1000L
     }
 
@@ -36,12 +40,10 @@ fun CryptoPriceChart(priceResponse: PriceResponse, selectedTimeFrame: String) {
             .height(200.dp)
     ) {
 
-        var prices = priceResponse.prices
 
         val currentTime = System.currentTimeMillis()
-        val filteredPrices = prices.filter { it[0] >= currentTime - timeFrameInMillis }
-
-        prices = filteredPrices
+        val filteredPrices = filterPricesByTimeFrame(priceResponse.prices, timeFrameInMillis)
+        val prices = filteredPrices
 
         val maxPrice = filteredPrices.maxOf { it[1] }
         val minPrice = filteredPrices.minOf { it[1] }
@@ -61,9 +63,9 @@ fun CryptoPriceChart(priceResponse: PriceResponse, selectedTimeFrame: String) {
 
 
         val paint = Paint().apply {
-            color = Color.Blue
+            color = Color(0xFF0063F5)
             style = PaintingStyle.Stroke // Использование PaintingStyle.Stroke вместо Stroke
-            strokeWidth = 2f // Ширина линии
+            strokeWidth = 5f // Ширина линии
         }
 
 
@@ -91,7 +93,7 @@ fun CryptoPriceChart(priceResponse: PriceResponse, selectedTimeFrame: String) {
         val pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
 
         drawLine(
-            color = Color.Red, // Цвет максимальной цены
+            color = Color(color = R.color.color_primary_text), // Цвет максимальной цены
             start = Offset(size.width - xPadding, maxPriceY.toFloat()),
             end = Offset(xPadding, maxPriceY.toFloat()),
             strokeWidth = 2f,
@@ -99,7 +101,7 @@ fun CryptoPriceChart(priceResponse: PriceResponse, selectedTimeFrame: String) {
         )
 
         drawLine(
-            color = Color.Green, // Цвет минимальной цены
+            color = Color(color = R.color.color_primary_text), // Цвет минимальной цены
             start = Offset(size.width - xPadding, minPriceY.toFloat()),
             end = Offset(xPadding, minPriceY.toFloat()),
             strokeWidth = 2f,
@@ -108,7 +110,7 @@ fun CryptoPriceChart(priceResponse: PriceResponse, selectedTimeFrame: String) {
 
         drawIntoCanvas { canvas ->
             val paintText = androidx.compose.ui.graphics.Paint().asFrameworkPaint().apply {
-                color = android.graphics.Color.BLACK // Цвет текста
+                color = R.color.color_primary_text // Цвет текста
                 textSize = 42f // Размер текста
             }
 
@@ -149,8 +151,25 @@ fun CryptoPriceChart(priceResponse: PriceResponse, selectedTimeFrame: String) {
         // Рисуем фигуру под графиком
         drawPath(
             path = path,
-            color = Color.Blue.copy(alpha = 0.3f) // Цвет с прозрачностью
+            color = Color.Blue.copy(alpha = 0.1f) // Цвет с прозрачностью
         )
+    }
+}
+
+private fun filterPricesByTimeFrame(prices: List<List<Double>>, timeFrameInMillis: Long): List<List<Double>> {
+    val currentTime = System.currentTimeMillis()
+    val filteredPrices = prices.filter { it[0] >= currentTime - timeFrameInMillis }
+
+    return if (timeFrameInMillis > 7L * 24L * 60L * 60L * 1000L) {
+        filteredPrices.filterIndexed { index, _ ->
+            index % 5 == 0
+        }
+    } else if (timeFrameInMillis > 84L * 24L * 60L * 60L * 1000L) {
+        filteredPrices.filterIndexed { index, _ ->
+            index % 15 == 0
+        }
+    } else {
+        filteredPrices
     }
 }
 

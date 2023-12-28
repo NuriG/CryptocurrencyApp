@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="color_bottom_bar">#FF1A1A1A</color>
+    <color name="color_primary_text">#FFFAFAFA</color>
+    <color name="color_secondary_text">#FF9B9B9B</color>
+    <color name="icon_bottom_bar_pressed">#FFFFFFFF</color>
+    <color name="icon_bottom_bar_unpressed">#FF868686</color>
+    <color name="button_buy">#FF00255C</color>
+    <color name="button_swipe_1">#FF121212</color>
+    <color name="button_swipe_text_pressed">#FFFFFFFF</color>
+    <color name="button_swipe_text">#FF6C757D</color>
+</resources>

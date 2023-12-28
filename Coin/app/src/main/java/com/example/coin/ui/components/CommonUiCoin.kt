@@ -1,5 +1,6 @@
 package com.example.coin.ui.components
 
+
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
@@ -14,16 +15,16 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun FormattedChangeInProcent(price: Double, priceChange24h: Double) {
 
-    val procent = ((price + priceChange24h)-price)/price*100
-    val roundedProcent = String.format("%.2f", procent)
+    val percent = ((price + priceChange24h)-price)/price*100
+    val roundedPercent = String.format("%.2f", percent)
 
     val textColor = when {
-        procent < 0 -> Color(0xFFEB5757) // Text color for negative percentage
+        percent < 0 -> Color(0xFFEB5757) // Text color for negative percentage
         else -> Color(0xFF2A9D8F) // Text color for positive or zero percentage
     }
 
     Text(
-        text = roundedProcent + " %",
+        text = "$roundedPercent %",
         color = textColor,
         fontWeight = FontWeight.Medium
     )
@@ -41,7 +42,6 @@ fun FormattedChangeForChart(price: Double, priceChange: Double) {
         else -> Color(0xFF2A9D8F) // Text color for positive or zero percentage
     }
 
-    // Определение треугольника в зависимости от знака процентного изменения
     val triangleSymbol = if (percent >= 0) "\u25B2" else "\u25BC"
     val triangleColor = if (percent >= 0) Color(0xFF2A9D8F) else Color(0xFFEB5757)
 
